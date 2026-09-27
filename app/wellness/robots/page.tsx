@@ -94,8 +94,8 @@ export default function RobotsPage() {
           <Typography>No wellness robots found. Start by adding a new robot!</Typography>
         </Paper>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+          <Table sx={{ minWidth: 1000 }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
                 <TableCell><strong>Name</strong></TableCell>
