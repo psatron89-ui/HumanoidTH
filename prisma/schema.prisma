@@ -227,26 +227,55 @@ model SourcePullJob {
 }
 
 model OwnedInventory {
-  id                 String      @id @default(cuid())
+  id                 String         @id @default(cuid())
   robotModelId       String?
-  robotModel         RobotModel? @relation(fields: [robotModelId], references: [id], onDelete: SetNull)
+  robotModel         RobotModel?    @relation(fields: [robotModelId], references: [id], onDelete: SetNull)
+  wellnessRobotId    String?
+  wellnessRobot      WellnessRobot? @relation(fields: [wellnessRobotId], references: [id], onDelete: SetNull)
   displayName        String
   ownershipStatus    String
   ownerOrg           String?
   custodian          String?
   locationLabel      String?
   serialNumber       String?
-  publicSerialSafe   Boolean     @default(false)
+  publicSerialSafe   Boolean        @default(false)
   acquisitionDate    DateTime?
   acquisitionSource  String?
   conditionStatus    String?
   firmwareVersion    String?
-  accessories        Json        @default("[]")
-  documentationLinks Json        @default("[]")
-  visibility         String      @default("private")
+  accessories        Json           @default("[]")
+  documentationLinks Json           @default("[]")
+  visibility         String         @default("private")
   notes              String?
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
 
   @@index([robotModelId])
+  @@index([wellnessRobotId])
+}
+
+model WellnessRobot {
+  id                    String       @id @default(cuid())
+  name                  String       @unique
+  manufacturer          String
+  model                 String
+  robotType             String
+
+  targetAudience        String
+  capabilities          String[]
+
+  deploymentLocations   String[]
+  deployedCount         Int          @default(0)
+  totalBenefit          Int          @default(0)
+
+  wellnessImpactScore   Float?
+  lastMaintenanceDate   DateTime?
+  status                String       @default("Active")
+
+  inventory             OwnedInventory[]
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  @@index([status])
+  @@index([targetAudience])
 }
